@@ -1,49 +1,40 @@
-# Maksims Jakusevs 221RDB376
+# python3
+# Maksims Jaksuevs 221RDB376
 
-class Bracket:
-    def __init__(self, type, position):
-        self.type = '\0'
-        self.position = 0
+from collections import namedtuple
+Bracket = namedtuple("Bracket", ["char", "position"])
 
-        self.type = type
-        self.position = position
+def are_matching(left, right):
+    return (left + right) in ["()", "[]", "{}"]
 
-    def Matchc(self, c):
-        if self.type == '[' and c == ']':
-            return True
-        if self.type == '{' and c == '}':
-            return True
-        if self.type == '(' and c == ')':
-            return True
-        return False
+def find_mismatch(text):
+    opening_brackets_stack = []
+
+
+    for i, next in enumerate(text):
+        if next in " ([{ ":
+            opening_brackets_stack.append(Bracket(next, i + 1))
+
+        if next in " )]} ":
+
+            if are_matching(opening_brackets_stack.pop().char, next) == False:
+                return i + 1
+
+    if (len(opening_brackets_stack) == 0):
+        return ' Success '
+
+    else:
+        while len(opening_brackets_stack) > 0:
+            first_opening_bracket = opening_brackets_stack.pop()
+        return first_opening_bracket.position 
 
 
 def main():
-    text = ""
-    text = input()
-
-    opening_brackets_stack = []
-
-    position = 0
-    while position < len(text):
-        next = text[position]
-
-        if next == '(' or next == '[' or next == '{':
-            opening_brackets_stack.push(Bracket(next, position + 1))
-
-        if next == ')' or next == ']' or next == '}':
-            if opening_brackets_stack.empty() or not opening_brackets_stack.top().Matchc(next):
-                print(position + 1, end = '')
-                print("\n", end = '')
-            opening_brackets_stack.pop()
-        position += 1
-
-    if opening_brackets_stack.empty():
-        print("Success", end = '')
-        print("\n", end = '')
-    else:
-        print(opening_brackets_stack.top().position, end = '')
-        print("\n", end = '')
+    text=input()
+    if 'I' in text:
+        text=input()
+    mismatch=find_mismatch(text)
+    print(mismatch)
 
 if __name__ == "__main__":
     main()
