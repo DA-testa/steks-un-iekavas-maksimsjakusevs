@@ -1,31 +1,49 @@
-# python3
+# Maksims Jakusevs 221RDB376
 
-from collections import namedtuple
+class Bracket:
+    def __init__(self, type, position):
+        self.type = '\0'
+        self.position = 0
 
-Bracket = namedtuple("Bracket", ["char", "position"])
+        self.type = type
+        self.position = position
 
-
-def are_matching(left, right):
-    return (left + right) in ["()", "[]", "{}"]
-
-
-def find_mismatch(text):
-    opening_brackets_stack = []
-    for i, next in enumerate(text):
-        if next in "([{":
-            # Process opening bracket, write your code here
-            pass
-
-        if next in ")]}":
-            # Process closing bracket, write your code here
-            pass
+    def Matchc(self, c):
+        if self.type == '[' and c == ']':
+            return True
+        if self.type == '{' and c == '}':
+            return True
+        if self.type == '(' and c == ')':
+            return True
+        return False
 
 
 def main():
+    text = ""
     text = input()
-    mismatch = find_mismatch(text)
-    # Printing answer, write your code here
 
+    opening_brackets_stack = []
+
+    position = 0
+    while position < len(text):
+        next = text[position]
+
+        if next == '(' or next == '[' or next == '{':
+            opening_brackets_stack.push(Bracket(next, position + 1))
+
+        if next == ')' or next == ']' or next == '}':
+            if opening_brackets_stack.empty() or not opening_brackets_stack.top().Matchc(next):
+                print(position + 1, end = '')
+                print("\n", end = '')
+            opening_brackets_stack.pop()
+        position += 1
+
+    if opening_brackets_stack.empty():
+        print("Success", end = '')
+        print("\n", end = '')
+    else:
+        print(opening_brackets_stack.top().position, end = '')
+        print("\n", end = '')
 
 if __name__ == "__main__":
     main()
